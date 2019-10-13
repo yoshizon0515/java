@@ -1,7 +1,4 @@
-package com.example.sample;
-
-import java.util.LinkedHashMap;
-import java.util.function.Consumer;
+﻿package com.example.sample;
 
 import org.springframework.beans.BeanUtils;
 
@@ -19,8 +16,7 @@ class LvlTransUtil
 {
 	/**
 	 * 検索ボタン押下時のレベル移動処理
-	 * 0以上のキーのデータをすべて削除する。その後一覧の検索条件をセットする
-	 * @param form
+	 * マップの中身をすべて削除し、その後一覧の検索条件をセットする
 	 * @return 値をセットした後の最大のキー(レベル移動番号)
 	 */
 	static LvlTransFunction<F11002_D001_Form,  F11002_D001_FindList> searchAction()
@@ -29,10 +25,10 @@ class LvlTransUtil
 	     LvlTransFunction<F11002_D001_Form,  F11002_D001_FindList> search = (f, e) ->
 		{
 
-			Integer level = 0;
+			Integer lvlIdoBngo = 0;
 
-			//0以上のキーを削除
-			searchDelete().accept(f.getLvlTransMap());
+			//マップの中身を全削除
+			f.getLvlTransMap().clear();
 
 			F11002_D001_LstCond lstCond = new F11002_D001_LstCond();
 
@@ -40,10 +36,10 @@ class LvlTransUtil
 			BeanUtils.copyProperties(f, lstCond);
 
 			//一覧の検索条件をセット
-			//レベル0の場合、親の一覧の検索条件はセットしない
-			f.getLvlTransMap().put(level, new LvlTransInfo(e, lstCond, null));
+			//一覧選択entity・親の一覧の検索条件はセットしない
+			f.getLvlTransMap().put(lvlIdoBngo, new LvlTransInfo(null, lstCond, null));
 
-			return level;
+			return lvlIdoBngo;
 
 		};
 
@@ -52,13 +48,19 @@ class LvlTransUtil
 	}
 
 
+	/**
+	 * [配下一覧]ボタン押下時の処理。
+	 * 最大のレベル移動番号を発番し、一覧の検索条件・親の一覧の検索条件・選択されたentityを
+	 * クラスに格納し保存する。
+	 * @return 値をセットした後の最大のキー(レベル移動番号)
+	 */
 	static LvlTransFunction<F11002_D001_Form,  F11002_D001_FindList> underAction()
 	{
 		LvlTransFunction<F11002_D001_Form,  F11002_D001_FindList> under = (f, e) ->
 		{
 
 			//key:レベル移動番号の最大値 + 1 value:
-			Integer newLevel = maxKeyValue(f) + 1;
+			Integer lvlIdoBngo = maxKeyValue(f) + 1;
 
 			//条件をセット
 			F11002_D001_LstCond lstCond = new F11002_D001_LstCond();
@@ -66,15 +68,19 @@ class LvlTransUtil
 			F11002_PrntLstCond prntLstCond = new F11002_PrntLstCond();
 
 
-			f.getLvlTransMap().put(newLevel, new LvlTransInfo(e, lstCond, prntLstCond));
+			f.getLvlTransMap().put(lvlIdoBngo, new LvlTransInfo(e, lstCond, prntLstCond));
 
-			return newLevel;
+			return lvlIdoBngo;
 
 		};
 
 		return under;
 	}
 
+	/**
+	 * [親の一覧]に戻る ボタン押下時の処理。最大のレベル移動番号のデータをマップから削除
+	 * @return 値をセットした後の最大のキー(レベル移動番号)
+	 */
 	static LvlTransFunction<F11002_D001_Form,  F11002_D001_FindList> backPrntLvl()
 	{
 
@@ -86,8 +92,8 @@ class LvlTransUtil
 			//最大レベルを削除
 			f.getLvlTransMap().remove(maxLevel);
 
-			//最大レベルを削除したので最大レベルから1引いた数を返す
-			return --maxLevel;
+			//最大レベルを削除後の最大レベルを返す。
+			return maxKeyValue(f);
 
 		};
 
@@ -116,20 +122,6 @@ class LvlTransUtil
 				.mapToInt(s -> s.intValue()).max().getAsInt();
 	}
 
-
-	/**
-	 * レベル移動番号が0以外のデータを削除
-	 * @return
-	 */
-	private static Consumer<LinkedHashMap<Integer, LvlTransInfo>> searchDelete()
-	{
-		Consumer<LinkedHashMap<Integer, LvlTransInfo>> delete =
-				lvlMap -> {lvlMap.keySet().forEach(key -> {if(key > 0) {lvlMap.remove(key); }});
-		};
-
-		return delete;
-
-	}
 
 
 }
