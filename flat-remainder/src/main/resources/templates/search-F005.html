@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+	<!--Import Google Icon Font-->
+	<link th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" th:href="@{/css/materialize.css}" media="screen,projection" />
+	<link type="text/css" rel="stylesheet" th:href="@{/css/other.css}" media="screen,projection" />
+	<link rel="stylesheet" th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic}">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+
+<body>
+
+	<div id="wrap">
+		<nav>
+			<div class="nav-wrapper green lighten-3 ">
+				<a href="" class="brand-logo">flat-remainder</a>
+			</div>
+		</nav>
+
+		<div class="collection">
+			<a href="#!" class="collection-item">リマインダー／メモ表示</a>
+			<a href="#!" class="collection-item">ユーザ情報表示</a>
+		</div>
+
+		<div class="row center-align" id="title">
+			<h4>リマインダー／メモ検索</h4>
+		</div>
+
+		<a class="waves-effect waves-teal btn-flat" id=hide-button>
+			<i class="material-icons left" id=change-icon>expand_less</i>
+		</a>
+
+		<div class="row form-F005 top-padding-F005">
+			<form class="col s12 input-for" th:action="@{/rem_search}" th:object="F005Form" method="POST">
+				<div class="row scale-transition" id="hide-target">
+					<div class="input-field col s12 m6 l6">
+						<select th:field="*{article_cls}" id="rem-memo-select">
+							<option th:each="s : *{article_cls_select}" th:value="${s.val}" th:text="${s.label}"></option>
+						</select>
+						<label>リマインダー／メモ</label>
+					</div>
+					<div class="input-field col s12 m6 l4">
+						<input id="title" type="text" maxlength="30" class="validate">
+						<label for="title">タイトル</label>
+					</div>
+					<div class="input-field col s12 m6 l4">
+						<input id="content" type="text" maxlength="30" class="validate">
+						<label for="content">内容</label>
+					</div>
+					<div class="input-field modal-toppad-F004 col s6">
+						<select th:field="*{ins_category}">
+							<option th:each="s : *{ins_category_select}" th:value="${s.val}" th:text="${s.label}"></option>
+						</select>
+						<label>カテゴリ</label>
+					</div>
+
+					<div class="input-field modal-toppad-F004 col s6">
+							<select th:field="*{ins_importance}">
+								<option th:each="s : *{ins_importance_select}" th:value="${s.val}" th:text="${s.label}"></option>
+							</select>
+							<label>重要度</label>
+						</div>
+
+
+					<div id="target-date-select ">
+						<div class="input-field memo-no-disp col s6 l4">
+							<input type="text" class="datepicker validate" id="from_target_date" placeholder="From" readonly>
+							<label for="from_target_date">指定日時</label>
+						</div>
+						<div class="input-field memo-no-disp col s6 l4">
+							<input type="text" class="datepicker validate" id="to_target_date" placeholder="To" readonly>
+							<label for="to_target_date">指定日時</label>
+						</div>
+					</div>
+
+					<div id="upd-date-select">
+						<div class="input-field col s6 l4">
+							<input type="text" class="datepicker validate" id="from_upd_date" placeholder="From" readonly>
+							<label for="from_upd_date">更新日時</label>
+						</div>
+						<div class="input-field col s6 l4">
+							<input type="text" class="datepicker validate" id="to_upd_date" placeholder="To" readonly>
+							<label for="to_upd_date">更新日時</label>
+						</div>
+					</div>
+
+					<div class="input-field col s3 l2">
+						<p>
+							<label>
+								<input type="checkbox" name="favorite_flg" th:value="1" />
+								<span>お気に入りのみ</span>
+							</label>
+						</p>
+
+					</div>
+					<div class="input-field col s3 l2">
+						<p>
+							<label>
+								<input type="checkbox" name="del_flg" th:value="1" />
+								<span>削除済み</span>
+							</label>
+						</p>
+					</div>
+				</div>
+			</form>
+
+			<div class="row">
+				<div class="input-field col s6 m6 l6">
+				</div>
+				<div class="input-field btn-F003 col s6 m6 l6">
+					<span>
+						<button thpe="submit" class="waves-effect waves-light btn" name="update" >
+							<i class="material-icons right">shuffle</i>変更</button>
+					</span>
+					<span id="btn-margin-F003">
+						<button type="submit" class="waves-effect waves-light btn" name="search">
+							<i class="material-icons right">zoom_in</i>検索</button>
+					</span>
+				</div>
+			</div>
+
+			<table>
+				<tbody>
+					<tr  th:each="entity, stat : *{findList}">
+						<div class="col s12 m6 l4" id="card-padding">
+							<div class="card darken-1 z-depth-3">
+								<div class="card-content white-text" th:if="${entity.title} eq '1' ">
+									<i class="material-icons right">grade</i>
+									</a>
+									<span class="card-title" id="card-title-top">Card Title</span>
+									<span class="card-top-check">
+										<label>
+											<input class="with-gap" th:field="${entity.selectIndex}" th:value="${stat.index}" type="radio" />
+											<span>select</span>
+										</label>
+									</span>
+								</div>
+								<div class="card-action grey lighten-4 z-depth-3 col s12">
+									<div class="card-message" th:text="${entity.content}">ここに本文が出力される。</div>
+									<div class="card-footer">
+										<div class="card-left col s6" >カテゴリ：
+											<span th:text="${entity.category}">プライベート</span>
+										</div>
+										<div class="card-right col s6">重要度：
+											<spam th:text="${entity.importance_nm}">重要</span>
+										</div>
+										<div class="card-left memo-no-disp col s6">指定日時：
+											<span th:text="${#dates.format(entity.target_datetime, 'yyyy/MM/dd HH:mm')}">2019/1/14</span>
+										</div>
+										<div class="card-right col s6">更新日時：
+											<spam th:text="${#dates.format(entity.upd_date, 'yyyy/MM/dd HH:mm')}">2019/12/14</span>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</tr>
+				</tbody>
+			</table>
+
+
+
+		</div>
+		<footer>
+			<nav>
+				<div class="nav-wrapper green lighten-3 ">
+					<div class="container">
+						© 2019 yoshinami
+					</div>
+				</div>
+			</nav>
+		</footer>
+	</div>
+	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
+	<script type="text/javascript" th:src="@{/js/materialize.js}"></script>
+	<script>
+		$(function () {
+
+			$('select').formSelect();
+
+			$('textarea#search-textarea1').characterCounter();
+
+			$('.datepicker').datepicker({
+				selectMonths: true,
+				showClearBtn: true,
+				autoClose: true,
+				selectMonths: true,
+				closeOnSelect: false,
+				clear: 'Clear',
+				format: 'yyyy/mm/dd'
+
+			});
+
+			$('#rem-memo-select').on('change', function () {
+
+				$remmemo = $('#rem-memo-select').val();
+
+				if ($remmemo == '001') {
+					$('.memo-no-disp').show();
+				}
+				else {
+					$('.memo-no-disp').hide();
+				}
+			});
+
+			$('footer').hover(function () {
+				$(this).fadeOut(1500);
+			});
+
+			var $messageLen = $('#card-message').text().length + 80;
+			var $setPx = String($messageLen) + "px";
+			$('#card-message').css('height', $setPx)
+
+			$('#hide-button').on('click', function () {
+
+				if ($('#hide-target').hasClass('scale-out')) {
+					$('#hide-target').removeClass('scale-out');
+
+					$('#change-icon').text('expand_less');
+
+					$('#hide-target').fadeIn(750);
+				}
+				else {
+					$('#hide-target').addClass('scale-out')
+
+					$('#change-icon').text('expand_more');
+
+					$('#hide-target').css('display', 'none');
+				}
+
+
+			});
+
+		});
+	</script>
+</body>
+
+</html>

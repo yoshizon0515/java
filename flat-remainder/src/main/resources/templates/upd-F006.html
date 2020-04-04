@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!--Import Google Icon Font-->
+	<link type="text/css" rel="stylesheet" href="../static/materialize.css" media="screen,projection" />
+	<link type="text/css" rel="stylesheet" href="../static/other.css" media="screen,projection" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+
+	<div id="wrap">
+		<nav>
+			<div class="nav-wrapper green lighten-3 ">
+				<a href="" class="brand-logo">flat-remainder</a>
+			</div>
+		</nav>
+
+		<div class="collection">
+			<a href="#!" class="collection-item">リマインダー／メモ検索</a>
+			<a href="#!" class="collection-item">ユーザ情報表示</a>
+		</div>
+
+		<div class="row center-align" id="title">
+			<h4>リマインダー編集</h4><!--メモを選択して遷移の場合　メモ編集 -->
+		</div>
+	
+		</div>
+
+		<div class="row form-F005 top-padding-F005" >
+			<form class="col s12 input-for">
+				<div class="row scale-transition" id="hide-target">
+					<div class="input-field col s12 m6">
+						<input id="change-title" type="text" maxlength="30" class="validate">
+						<label for="change-title">タイトル</label>
+					</div>
+					<div class="input-field col s12 m6">
+							<select>
+								<option value="" selected></option>
+								<option value="001">仕事</option>
+								<option value="002">プライベート</option>
+								<option value="003">祝事</option>
+							</select>
+							<label>カテゴリ</label>
+						</div>
+	
+					<div class="input-field col s12">
+							<textarea id="change-textarea1" data-length="500" class="materialize-textarea"></textarea>
+							<label for="change-textarea1">内容</label>
+					</div>
+
+					<div class="input-field col s12 m6 l4">
+						<select>
+							<option value="" selected></option>
+							<option value="001">低</option>
+							<option value="002">普通</option>
+							<option value="003">重要</option>
+						</select>
+						<label>重要度</label>
+					</div>
+
+
+					<div id="target-date-select ">
+						<div class="input-field memo-no-disp col s6 l4">
+							<input type="text" class="datepicker validate" id="search-targetdate-from" placeholder="From" readonly>
+							<label for="search-targetdate-from">指定日時</label>
+						</div>
+						<div class="input-field memo-no-disp col s6 l4">
+							<input type="text" class="datepicker validate" id="search-targetdate-to" placeholder="To" readonly>
+							<label for="search-targetdate-to">指定日時</label>
+						</div>
+					</div>
+
+					<div id="upd-date-select">
+						<div class="input-field col s6 l4">
+							<input type="text" class="datepicker validate" id="search-upddate-from" placeholder="From" readonly>
+							<label for="search-upddate-from">更新日時</label>
+						</div>
+						<div class="input-field col s6 l4">
+							<input type="text" class="datepicker validate" id="search-upddate-to" placeholder="To" readonly>
+							<label for="search-upddate-to">更新日時</label>
+						</div>
+					</div>
+
+					<div class="input-field col s3 l2">
+						<p>
+							<label>
+								<input type="checkbox" />
+								<span>お気に入り</span>
+							</label>
+						</p>
+
+					</div>
+					<div class="input-field col s3 l2">
+						<p>
+							<label>
+								<input type="checkbox" />
+								<span>削除</span>
+							</label>
+						</p>
+					</div>
+				</div>
+
+				<div class="row">
+						<div class="input-field col s6 m6 l6">
+						</div>
+						<div class="input-field btn-F003 col s6 m6 l6">
+							<span>
+								<a class="waves-effect waves-light btn">
+									<i class="material-icons right">shuffle</i>変更</a>
+							</span>
+						</div>
+					</div>
+		
+			</form>
+
+
+		</div>
+		<footer>
+			<nav>
+				<div class="nav-wrapper green lighten-3 ">
+					<div class="container">
+						© 2019 yoshinami
+					</div>
+				</div>
+			</nav>
+		</footer>
+	</div>
+	<script type="text/javascript" src="../static/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="../static/materialize.js"></script>
+	<script>
+		$(function () {
+
+			$('select').formSelect();
+
+			$('textarea#change-textarea1').characterCounter();
+
+			$('footer').hover( function(){
+				$(this).fadeOut(1500);
+			});
+
+		});
+	</script>
+</body>
+
+</html>

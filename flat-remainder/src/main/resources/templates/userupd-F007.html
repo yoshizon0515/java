@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!--Import Google Icon Font-->
+	<link type="text/css" rel="stylesheet" href="../static/materialize.css" media="screen,projection" />
+	<link type="text/css" rel="stylesheet" href="../static/other.css" media="screen,projection" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+
+	<div id="wrap">
+		<nav>
+			<div class="nav-wrapper green lighten-3 ">
+				<a href="" class="brand-logo">flat-remainder</a>
+				<ul id="nav-mobile" class="right">
+					<li>
+						<a href="#modal1" class="modal-trigger">ユーザ情報削除</a>
+					</li>
+				</ul>
+
+			</div>
+		</nav>
+
+		<div class="collection">
+			<a href="#!" class="collection-item">リマインダー／メモ検索</a>
+		</div>
+
+		<div class="row center-align" id="title">
+			<div class="disp-mode">
+				<h4>ユーザー情報表示</h4>
+			</div>
+			<div class="change-mode">
+				<h4>ユーザー情報編集</h4>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="row form-F005 top-padding-F005">
+		<form class="col s12 input-for">
+			<div class="row scale-transition" id="hide-target">
+				<div class="input-field col s12 m6">
+					<div class="disp-mode">
+						<input disabled id="dis-login-id" type="text" maxlength="30" class="validate">
+						<label for="dis-login-id">ID</label>
+					</div>
+					<div class="change-mode">
+						<input id="change-login-id" type="text" maxlength="30" class="validate">
+						<label for="change-login-id">ID</label>
+					</div>
+				</div>
+				<div class="input-field col s12 m6">
+					<div class="disp-mode">
+						<input disabled id="dis-password" type="password" maxlength="10" class="validate">
+						<label for="dis-password">Password</label>
+					</div>
+					<div class="change-mode">
+						<input id="change-password" type="password" maxlength="10" class="validate">
+						<label for="change-password">Password</label>
+					</div>
+				</div>
+
+				<div class="input-field col s12">
+					<div class="disp-mode">
+						<p>
+							<label>
+								<input type="checkbox" disabled checked="checked" />
+								<span>ログイン情報を保持する</span>
+							</label>
+						</p>
+					</div>
+					<div class="change-mode">
+						<p>
+							<label>
+								<input type="checkbox" />
+								<span>ログイン情報を保持する</span>
+							</label>
+						</p>
+					</div>
+				</div>
+
+				<div class="input-field col s6">
+					<div class="disp-mode">
+					</div>
+					<div class="change-mode">
+
+					</div>
+
+				</div>
+
+				<div class="input-field col s6 right-align">
+					<div class="disp-mode">
+						<span class="btn-F007">
+							<a class="waves-effect waves-light btn ">
+								<i class="material-icons right">arrow_back
+								</i>戻る</a>
+						</span>
+
+						<span>
+							<a class="waves-effect waves-light btn" id="change-F007">
+								<i class="material-icons right">create
+								</i>編集</a>
+						</span>
+					</div>
+					<div class="change-mode right-align">
+						<span class="btn-F007">
+							<a class="waves-effect waves-light btn" id="disp-F007">
+								<i class="material-icons right">clear_all
+								</i>リセット</a>
+						</span>
+						<span>
+							<a class="waves-effect waves-light btn">
+								<i class="material-icons right">shuffle
+								</i>変更</a>
+						</span>
+					</div>
+				</div>
+
+		</form>
+
+		<div id="modal1" class="modal">
+			<div class="modal-content green lighten-3 " id="modal-head-F002">
+				<h5>ユーザ情報登録</h5>
+			</div>
+
+			<div class="row model-contents">
+				<div class="input-field col s12">
+					<h6 class="center-align">ユーザー情報を削除します。よろしいですか？</h6>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<div>
+					<span>
+						<a href="#!" class="modal-close waves-effedreamct waves-light btn" id="modal-btn-F007">
+							<i class="material-icons right">event_busy</i>いいえ</a>
+					</span>
+					<span>
+						<a href="#!" class="modal-close waves-effect waves-light btn">
+							<i class="material-icons right">event_available</i>はい</a>
+					</span>
+				</div>
+			</div>
+
+		</div>
+		<footer>
+			<nav>
+				<div class="nav-wrapper green lighten-3 ">
+					<div class="container">
+						© 2019 yoshinami
+					</div>
+				</div>
+			</nav>
+		</footer>
+		</div>
+		<script type="text/javascript" src="../static/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="../static/materialize.js"></script>
+		<script>
+			$(function () {
+
+				$('footer').hover(function () {
+					$(this).fadeOut(1500);
+				});
+
+				$('.modal').modal();
+
+				$('#change-F007').click(function () {
+
+					$('.disp-mode').hide();
+
+					$('.change-mode').show();
+
+				});
+
+				$('#disp-F007').click(function () {
+
+					$('.change-mode').hide();
+
+					$('.disp-mode').show();
+				});
+
+			});
+		</script>
+</body>
+
+</html>

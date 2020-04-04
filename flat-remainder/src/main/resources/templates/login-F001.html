@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+	<!--Import Google Icon Font-->
+	<link th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" th:href="@{/css/materialize.css}" media="screen,projection" />
+	<link type="text/css" rel="stylesheet" th:href="@{/css/other.css}" media="screen,projection" />
+	<link rel="stylesheet" th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic}">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+	<div id="wrap">
+		<nav>
+			<div class="nav-wrapper green lighten-3 ">
+				<a href="" class="brand-logo">flat-remainder</a>
+				<ul id="nav-mobile" class="right">
+					<li>
+						<a href="#modal1" class="modal-trigger">ユーザ情報登録</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<div class="row center-align" id="title">
+			<h4>ユーザ認証</h4>
+		</div>
+
+		<div class="row form-F001">
+			<form class="col s12 input-for " th:action="@{/login}" th:object="${F001Form}" method="POST" id="F001-Form">
+
+				<div class="row">
+					<div class="input-field col s12 m6 l6">
+						<input type="text" maxlength="10" class="validate" th:field="*{login_id}">
+						<label for="login_id">ID</label>
+					</div>
+					<div class="input-field col s12 m6 l6">
+						<input type="password" maxlength="10" class="validate" th:field="*{login_pass}" th:errorclass="fieldError">
+						<label for="login_pass">Password</label>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s4 m4 l4">
+					</div>
+					<div class="input-field col s4 m4 l4">
+					</div>
+					<div class="input-field col s4 m4 l4" id="btn-F001">
+						<button type="submit" class="waves-effect waves-light btn" name="login_btn">
+							<i class="material-icons right">enhanced_encryption</i>ログイン</button>
+					</div>
+				</div>
+
+				<!-- Modal Structure -->
+				<div id="modal1" class="modal">
+					<div class="modal-content green lighten-3 " id="modal-head-F002">
+						<h5>ユーザ情報登録</h5>
+					</div>
+
+					<div class="row">
+						<div class="input-field col s12">
+							<input type="text" th:field="*{insert_id}" maxlength="10" class="validate">
+							<label for="insert_id">ID</label>
+						</div>
+						<div class="input-field col s12">
+							<input type="password" th:field="*{insert_password}" maxlength="10" class="validate">
+							<label for="insert_password">Password</label>
+						</div>
+						<div class="input-field col s12">
+							<input type="text" th:field="*{nickname}" maxlength="10" class="validate">
+							<label for="nickndame">ニックネーム</label>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="modal-close waves-effect waves-light btn" id="insert-F002" name="insert-btn">
+							<i class="material-icons right">add_box</i>登録</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<footer>
+		<nav>
+			<div class="nav-wrapper green lighten-3 ">
+				<div class="container">
+					© 2019 yoshinami
+				</div>
+			</div>
+		</nav>
+	</footer>
+	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
+	<script type="text/javascript" th:src="@{/js/materialize.js}"></script>
+	<script th:inline="javascript">
+		$(function () {
+			$('.modal').modal();
+			$('#insert-F002').click(function () {
+			});
+
+			$('footer').hover(function () {
+				$(this).fadeOut(1500);
+			});
+		});
+	</script>
+</body>
+
+
+</html>

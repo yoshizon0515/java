@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+	<!--Import Google Icon Font-->
+	<link th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" th:href="@{/css/materialize.css}" media="screen,projection" />
+	<link type="text/css" rel="stylesheet" th:href="@{/css/other.css}" media="screen,projection" />
+	<link rel="stylesheet" th:href="@{https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic}">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+
+	<div id="wrap">
+		<nav>
+			<div class="nav-wrapper green lighten-3 ">
+				<a href="*" class="brand-logo">flat-remainder</a>
+				<ul id="nav-mobile" class="right">
+					<li>
+						<a href="#modal2" class="modal-trigger">リマインダー／メモ登録</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<div class="collection">
+			<a href="/rem_search" th:id="${user_id}" class="collection-item">リマインダー／メモ検索</a>
+			<a href="@{/userupd}" class="collection-item">ユーザ情報表示</a>
+		</div>
+
+		<div th:include="common/fragments :: common_disp_user"></div>
+
+		<div class="row center-align" id="title">
+			<h4>リマインダー／メモ表示</h4>
+		</div>
+
+		<div class="row form-F003">
+			<form class="col s12 input-for" th:action="@{/disp}" th:object="${F003Form}" id='modal-input-F003' name="Form_F003" th:method="post">
+				<div class="row" id="top-padding-F003">
+					<div class="input-field col s12 m6 l6">
+						<select th:field="*{article_cls}" id="rem-memo-select">
+							<option th:each="s : *{article_cls_select}" th:value="${s.val}" th:text="${s.label}"></option>
+						</select>
+						<label>リマインダー／メモ</label>
+					</div>
+
+					<div class="input-field col  s12 m6 l6">
+						<select class="submit-F003" th:field="*{disp_period}" id="rem-memo-disp">
+							<option th:each="s : *{disp_period_select}" th:value="${s.val}" th:text="${s.label}"></option>
+						</select>
+						<label>表示期間</label>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s6 m6 l6">
+					</div>
+					<div class="input-field btn-F003 col s6 m6 l6">
+						<span id="btn-margin-F003">
+							<button type="submit" class="waves-effect waves-light btn" name="search">
+								<i class="material-icons right">zoom_in</i>検索</button>
+						</span>
+					</div>
+				</div>
+
+				<table>
+					<tbody>
+						<tr th:each="entity, stat : *{findList}">
+							<div class="card-padding col s12 m6 l4">
+								<div class="card darken-1 z-depth-3">
+									<div class="card-content white-text" th:classappend="${entity.head_color_class}">
+										<i class="material-icons right" th:if="${entity.favorite_flg} == '1'">grade</i>
+										<span class="card-title" id="card-title-top" th:text="${entity.title} neq ''  ? ${entity.title} : 'NO TITLE' ">Card Title</span>
+										<span class="card-top-check">
+											<label>
+												<span th:text="${entity.rem_id}"></span>
+											</label>
+										</span>
+									</div>
+									<div class="card-action z-depth-3 col s12">
+										<div class="card-message" th:text="${entity.content}">ここに本文が出力される。</div>
+										<div class="card-footer">
+											<div class="card-left col s6">カテゴリ：
+												<span th:text="${entity.category}">プライベート</span>
+											</div>
+											<div class="card-right col s6">重要度：
+												<span th:text="${entity.importance_nm}">重要</span>
+											</div>
+											<div th:if="${entity.article_cls} eq '001'" class="card-left col s6">指定日時：
+												<span th:text="${#dates.format(entity.target_datetime, 'yyyy/MM/dd HH:mm')}">2019/1/14 10:10</span>
+											</div>
+											<div class="card-right col s6">更新日時：
+												<span th:text="${#dates.format(entity.upd_date, 'yyyy/MM/dd HH:mm')}">2019/12/14 10:10</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- Modal Structure insert modal -->
+				<div id="modal2" class="modal">
+					<div class="modal-content green lighten-3 " id="modal-head-F004">
+						<h5>リマインダー／メモ登録</h5>
+					</div>
+
+					<div class="row">
+						<div class="input-field modal-toppad-F004 col s6">
+							<select id="rem-memo-select-modal" th:field="*{ins_article_cls}">
+								<option th:each="s : *{ins_article_cls_select}" th:value="${s.val}" th:text="${s.label}"></option>
+							</select>
+							<label>リマインダー／メモ</label>
+						</div>
+						<div class="input-field modal-toppad-F004 col s6">
+							<select th:field="*{ins_category}">
+								<option th:each="s : *{ins_category_select}" th:value="${s.val}" th:text="${s.label}"></option>
+							</select>
+							<label>カテゴリ</label>
+						</div>
+
+						<div class="input-field col s12">
+							<input th:field="*{ins_title}" type="text" maxlength="30" class="validate">
+							<label for="title">タイトル</label>
+						</div>
+
+						<div class="input-field col s12">
+							<textarea th:field="*{ins_content}" data-length="500" class="materialize-textarea"></textarea>
+							<label for="content">内容</label>
+						</div>
+
+						<div class="input-field modal-toppad-F004 col s6">
+							<select th:field="*{ins_importance}">
+								<option th:each="s : *{ins_importance_select}" th:value="${s.val}" th:text="${s.label}"></option>
+							</select>
+							<label>重要度</label>
+						</div>
+
+						<div class="input-field memo-no-disp-modal col s6">
+							<input type="text" class="datepicker validate" th:field="*{ins_target_date}" placeholder="open calendar" readonly>
+							<label for="ins_target_date">指定日</label>
+						</div>
+						<div class="input-field memo-no-disp-modal col s6">
+							<input type="text" class="timepicker validate" th:field="*{ins_target_time}" placeholder="open clock" readonly>
+							<label for="ins_target_time">指定時間</label>
+						</div>
+
+						<div class="input-field col s6">
+							<p>
+								<label>
+									<input type="checkbox" name="ins_favorite_flg" th:value="1" />
+									<span>お気に入り</span>
+								</label>
+							</p>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="modal-close waves-effect waves-light btn" id="insert-F002" name="insert">
+								<i class="material-icons right">add_box</i>登録</button>
+						</div>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+	<footer>
+		<nav>
+			<div class="nav-wrapper green lighten-3 ">
+				<div class="container">
+					© 2019 yoshinami
+				</div>
+			</div>
+		</nav>
+	</footer>
+	</div>
+	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
+	<script type="text/javascript" th:src="@{/js/materialize.js}"></script>
+	<script th:inline="javascript">
+		$(function () {
+
+
+			$('.modal').modal();
+
+			$('#rem-memo-select-modal').on('change', function () {
+
+				$remmemo = $('#rem-memo-select-modal').val();
+
+				sessionStorage.setItem('rem-memo', $remmemo)
+
+				if ($remmemo == '001') {
+					$('.memo-no-disp-modal').show();
+				}
+				else {
+					$('.memo-no-disp-modal').hide();
+				}
+			});
+
+			$('.datepicker').datepicker({
+				selectMonths: true,
+				showClearBtn: true,
+				autoClose: true,
+				selectMonths: true,
+				closeOnSelect: false,
+				clear: 'Clear',
+				format: 'yyyy/mm/dd'
+			});
+
+			$('.timepicker').timepicker({
+				showClearBtn: true,
+				twelveHour: false,
+			});
+
+			$('textarea#insert-textarea1').characterCounter();
+
+
+			$('select').formSelect();
+
+			$('footer').hover(function () {
+				$(this).fadeOut(1500);
+			});
+
+			var $messageLen = $('#card-message').text().length + 80;
+			var $setPx = String($messageLen) + "px";
+			$('#card-message').css('height', $setPx)
+
+		});
+	</script>
+</body>
+
+</html>
